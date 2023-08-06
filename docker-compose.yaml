@@ -1,3 +1,5 @@
+name: envoy-example
+
 services:
   simple-http-server:
     container_name: simple-http-server

@@ -1,3 +1,5 @@
+name: locust-envoy
+
 services:
   master:
     image: locustio/locust:2.16.1

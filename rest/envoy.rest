@@ -1,0 +1,2 @@
+GET {{BASE_URL}}/ping
+X-Auth-Token: test

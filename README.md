@@ -5,7 +5,7 @@
 - Envoy Proxy: https://www.envoyproxy.io
 - Document: https://www.envoyproxy.io/docs/envoy/latest
 
-## Components
+## Benchmark
 
 Docker 컨테이너로 테스트를 진행합니다.
 
@@ -28,7 +28,7 @@ Docker 컨테이너로 테스트를 진행합니다.
     - 같은 방법으로 Nginx 성능을 테스트합니다.
     - 실행법: `make locust-nginx`
 
-## Results
+### Results
 
 - Apple M1 (8C8T) Mac Mini 2021 에서의 결과이므로 절대적인 수치는 아닙니다.
 - 모든 컨테이너들은 1 코어만 사용하도록 CPU 제한을 두었습니다.
@@ -95,3 +95,28 @@ f6452d81b1f3   envoy-example-worker-2   8.22%     32.29MiB / 64MiB    50.45%    
 8cdfa07f690e   envoy-example-worker-3   9.17%     32.36MiB / 64MiB    50.56%    7.15MB / 6.01MB   0B / 0B      4
 01770ba2477c   envoy-example-worker-4   9.88%     32.45MiB / 64MiB    50.70%    8.42MB / 7.03MB   0B / 0B      3
 ```
+
+## Plugins
+
+[proxy-wasm-go-sdk](https://github.com/tetratelabs/proxy-wasm-go-sdk) 을 사용하여 WASM 형식의 Envoy 플러그인(또는 필터)을 만들어 봅니다.
+
+빌드를 위해서는 [TinyGo](https://tinygo.org/)가 필요합니다.
+
+```bash
+envoy/plugins
+├── README.md
+├── common # 공통으로 사용되는 코드들
+│   ├── go.mod
+│   ├── go.sum
+│   └── test_util.go
+└── keystone-auth # keystone 인증을 지원하는 플러그인 (WIP)
+    ├── go.mod
+    ├── go.sum
+    ├── main.go
+    ├── main.wasm
+    └── main_test.go
+```
+
+- 빌드: `make envoy-plugins-build`
+- 테스트: `make envoy-plugins-test`
+- 실행: `make docker-up`
