@@ -4,3 +4,13 @@
 
 - Envoy Proxy: https://www.envoyproxy.io
 - Document: https://www.envoyproxy.io/docs/envoy/latest
+
+
+## Components
+
+| Name               | Description | Local Port |
+|--------------------|-------------|------------|
+| Envoy              |             | 10000      |
+| Envoy Admin        |             | 10001      |
+| Simple HTTP Server |             | 11000      |
+| Nginx              |             | 12000      |
