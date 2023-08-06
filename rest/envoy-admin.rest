@@ -1,5 +1,0 @@
-### stats
-GET {{ADMIN_ENDPOINT}}/stats
-
-### config_dump
-GET {{ADMIN_ENDPOINT}}/config_dump
