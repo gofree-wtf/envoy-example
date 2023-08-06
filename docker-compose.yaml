@@ -1,0 +1,74 @@
+services:
+  simple-http-server:
+    container_name: simple-http-server
+    build:
+      context: simple-http-server
+    expose:
+      - "11000"
+    networks:
+      - envoy-example
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 64M
+        reservations:
+          cpus: '1'
+          memory: 32M
+    stop_grace_period: 1s
+
+  envoy:
+    container_name: envoy
+    image: envoyproxy/envoy:v1.27.0
+    depends_on:
+      - simple-http-server
+    links:
+      - simple-http-server
+    command:
+      - -c
+      - /etc/envoy-example/envoy/envoy-demo.yaml
+    volumes:
+      - /tmp/envoy-example/envoy:/etc/envoy-example/envoy
+    expose:
+      - "12000"
+    networks:
+      - envoy-example
+    ports:
+      - "12000:12000"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 128M
+        reservations:
+          cpus: '1'
+          memory: 64M
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.25.1
+    depends_on:
+      - simple-http-server
+    links:
+      - simple-http-server
+    volumes:
+      - /tmp/envoy-example/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    expose:
+      - "13000"
+    networks:
+      - envoy-example
+    ports:
+      - "13000:13000"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 128M
+        reservations:
+          cpus: '1'
+          memory: 64M
+
+networks:
+  envoy-example:
+    name: envoy-example
+    driver: bridge
